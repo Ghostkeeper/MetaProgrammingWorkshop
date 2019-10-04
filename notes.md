@@ -20,6 +20,7 @@ def debugme(func):
 4. Modify m0debugging.py: Instead of prints, use @debugme.
 5. Demonstrate effect:
 ```
+from m0debugging import *
 add(3, 4)
 div(3, 4)
 ```
