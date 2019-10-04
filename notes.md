@@ -7,8 +7,8 @@ Intro
 Function Decorators
 ----
 1. Show m0debugging.py.
-2. Use case: Print statements on many functions. Repetitive!
-3. Write decorator:
+2. Use case: Write print statements on all 3 functions. Repetitive!
+3. Write decorator at the top of m0debugging.py:
 ```
 def debugme(func):
   print("Generating the wrapped function.")
@@ -17,10 +17,12 @@ def debugme(func):
     return func(*args, **kwargs)
   return wrapper
 ```
-4. Modify m0debugging.py: Instead of prints, use @debugme.
+4. Modify code: Instead of prints, use @debugme.
 5. Demonstrate effect:
 ```
 from m0debugging import *
 add(3, 4)
 div(3, 4)
 ```
+6. You could replace the prints with logging or profiling later, just in one place.
+
