@@ -18,7 +18,7 @@ Function Decorators
 		return wrapper
 	```
 4. Modify code: Instead of prints, use @debugme.
-5. Demonstrate effect:
+5. Demonstrate effect with `python3`:
 	```
 	>>> from m0debugging import *
 	Wrapping a function!
@@ -46,7 +46,7 @@ Class Decorators
 				setattr(cls, key, debugme(val))
 		return cls
 	```
-4. Demonstrate the result:
+4. Demonstrate the result with `python3`:
 	```
 	>>> from m1classdec import *
 	Wrapping a function!
@@ -64,9 +64,8 @@ Class Decorators
 Owning the Dot
 ----
 1. Let's say we have a data structure. Show m2data.py.
-2. Can go wrong with type checking. Demonstrate:
+2. Can go wrong with type checking. Demonstrate with `python3 -i m2data.py`:
 	```
-	>>> from m2data import *
 	>>> p = Printer(extruders = 2, price = 4000, has_misp = True)
 	>>> p.price
 	4000             (so far so good, but...)
@@ -97,9 +96,8 @@ Owning the Dot
 		price = Descriptor("price")
 		...
 	```
-6. Demonstrate the effect:
+6. Demonstrate the effect with `python3 -i m2data.py`:
 	```
-	>>> from m2data import *
 	>>> p = Printer(extruders = 2, price = 4000, has_misp = True)
 	Set price
 	>>> p.price
@@ -125,9 +123,8 @@ Owning the Dot
 		price = Integer("price")
 		...
 	```
-9. Demonstrate this effect:
+9. Demonstrate this effect with `python3 -i m2data.py`:
 	```
-	>>> from m2data import *
 	>>> p = Printer(extruders = 2, price = 4000, has_misp = True)
 	Set price
 	>>> p = Printer(extruders = 2, price = "a coffee", has_misp = True)
@@ -170,6 +167,91 @@ Exec
 		for field in fields:
 			s += f"\tself.{field} = {field}\n"
 		return s
+	```
+4. Demonstrate live with `python3 -i m3exec.py`:
+	```
+	>>> generate_init(["extruders", "price", "has_misp"])
+	'def __init__(self, extruders, price, has_misp):\n ... '
+	>>> print(generate_init(["extruders", "price", "has_misp"])
+	def __init__(self, extruders, price, has_misp: ...
+	```
+5. Oh God, what atrocities is this guy up to! We can use that in our class. Modify m3exec.py in Printer class:
+	```
+	class Printer:
+		_fields = ["extruders", "price", "has_misp"]
+		exec(generate_init(_fields))
+	```
+	And remove the original init.
+6. Demonstrate again with `python3 -i m3exec.py`:
+	```
+	>>> p = Printer(2, 4000, True)
+	Set price
+	```
+	It still properly sets the price field. Powerful idea! namedtuple uses this.
+7. Use that to improve performance. Modify m3exec.py, replacing __set__ in Descriptor class:
+	```
+	class Descriptor:
+		...
+		@staticmethod
+		def set_code():
+			return ["instance.__dict__[self.name] = value"]
+	```
+8. Stay with me. We add something similar to Integer:
+	```
+	@staticmethod
+	def set_code():
+		return [
+			'if not isinstance(value, int):',
+			'\traise Error("No integer!")'  # Pay attention to quotes!
+		]
+	```
+9. And to AtLeast (job security going up):
+	```
+	@staticmethod
+	def set_code():
+		return [
+			'if value < self.minimum:'
+			'\traise Error("Too little!")'  # Quotes again!
+		]
+	```
+10. And to Bool:
+	```
+	@staticmethod
+	def set_code():
+		return [
+			'if not isinstance(value, bool):',
+			'\traise Error("No bool!")'  # Quotes again!
+		]
+	```
+11. What can we do with this? Well we could define the setter from these code fragments. Edit Descriptor's init:
+	```
+	def __init__(self, name):
+		self.name = name
+		code = "def __set__(self, instance, value):\n\t"
+		for cls in self.__class__.__mro__:
+			if "__set__" in cls.__dict__:
+				code += "\n\t".join(cls.set_code()) + "\n\t"
+		print(code)
+	```
+12. Now if we open this file with `python3 -i m3exec.py` it prints a bunch of code fragments.
+13. We can exec these. Modify the Descriptor init again:
+	```
+	def __init__(self, name):
+		... print(code)
+		locals = {}
+		exec(code, globals(), locals)
+		setattr(self.__class__, "__set__", locals["__set__"])  # Technicality: def adds to locals.
+	``` 
+14. I really hope this works. Demonstrate with `python3 -i m3exec.py`:
+	```
+	>>> p = Printer(2, 4000, True)
+	>>> p.price
+	Get price   # Still there!
+	4000
+	>>> p.price = "bla"
+	Exception: No integer!
+	>>> p.price = 1000
+	Exception: Too little!
 	```
 
 Bonus: Metaclass
