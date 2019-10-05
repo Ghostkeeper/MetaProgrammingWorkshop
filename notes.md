@@ -39,3 +39,15 @@ def debugall(cls):
 			setattr(cls, key, debugme(val))
 	return cls
 ```
+
+Owning the Dot
+----
+[TODO: Explanation about getattr and setattr]
+
+Exec
+----
+[TODO: Explanation about generating code as string and exec'ing it]
+
+Bonus: Metaclass
+----
+[TODO: Prepare explanation about metaclasses in case there is time left]
