@@ -74,7 +74,7 @@ Owning the Dot
 	>>> q.price
 	500
 	>>> q.extruders
-	"blue"
+	'blue'
 	```
 3. We can do something about that: descriptors. Add at the top of m2data.py:
 	```
@@ -115,7 +115,7 @@ Owning the Dot
 	class Integer(Descriptor):
 		def __set__(self, instance, value):
 			if not isinstance(value, int):
-				raise Exception("No!")
+				raise Exception("No integer!")
 			super().__set__(instance, value)
 	```
 7. And specify that our price must be integer:
@@ -131,7 +131,7 @@ Owning the Dot
 	Set price
 	>>> p = Printer(extruders = 2, price = "a coffee", has_misp = True)
 	...
-	Exception("No!") 
+	Exception("No integer!") 
 	```
 9. Arbitrary restrictions! Add a minimum price:
 	```
@@ -145,7 +145,7 @@ Owning the Dot
 				raise Exception("Too cheap!")
 			super().__set__(instance, value)
 
-	class MinimumInt(Integer, AtLeast):
+	class MinimumInt(Integer, AtLeast):  # Using descriptors as mixins here.
 		pass
 
 	class Printer:
