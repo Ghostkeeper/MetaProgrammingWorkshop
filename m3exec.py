@@ -23,14 +23,22 @@ class AtLeast(Descriptor):
 
 	def __set__(self, instance, value):
 		if value < self.minimum:
-			raise Exception("Too cheap!")
+			raise Exception("Too little!")
 		super().__set__(instance, value)
 
 class MinimumInt(Integer, AtLeast):  # Using descriptors as mixins here.
 	pass
 
+class Bool(Descriptor):
+	def __set__(self, instance, value):
+		if not isinstance(value, bool):
+			raise Exception("Not boolean!")
+		super().__set__(instance, value)
+
 class Printer:
+	extruders = MinimumInt("extruders", 1)
 	price = MinimumInt("price", 2000)
+	has_misp = Bool("has_misp")
 
 	def __init__(self, extruders, price, has_misp):
 		self.extruders = extruders
