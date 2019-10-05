@@ -76,7 +76,8 @@ Owning the Dot
 	>>> q.extruders
 	'blue'
 	```
-3. We can do something about that: descriptors. Add at the top of m2data.py:
+3. We can do something about that: Properties (type of descriptor). Show m2properties.py.
+4. Lots of code repetition! We can write our own descriptors. Add at the top of m2data.py:
 	```
 	class Descriptor:
 		def __init__(self, name):
@@ -90,13 +91,13 @@ Owning the Dot
 			print("Set", self.name)
 			instance.__dict__[self.name] = value
 	```
-4. Now we modify the class to use this descriptor. Edit the Printer class:
+5. Now we modify the class to use this descriptor. Edit the Printer class:
 	```
 	class Printer:
 		price = Descriptor("price")
 		...
 	```
-5. Demonstrate the effect:
+6. Demonstrate the effect:
 	```
 	>>> from m2data import *
 	>>> p = Printer(extruders = 2, price = 4000, has_misp = True)
@@ -110,7 +111,7 @@ Owning the Dot
 	Get price
 	2000
 	```
-6. Using this we can enforce e.g. type checking. Add below Descriptor class:
+7. Using this we can enforce e.g. type checking. Add below Descriptor class:
 	```
 	class Integer(Descriptor):
 		def __set__(self, instance, value):
@@ -118,13 +119,13 @@ Owning the Dot
 				raise Exception("No integer!")
 			super().__set__(instance, value)
 	```
-7. And specify that our price must be integer:
+8. And specify that our price must be integer:
 	```
 	class Printer:
 		price = Integer("price")
 		...
 	```
-8. Demonstrate this effect:
+9. Demonstrate this effect:
 	```
 	>>> from m2data import *
 	>>> p = Printer(extruders = 2, price = 4000, has_misp = True)
@@ -133,7 +134,7 @@ Owning the Dot
 	...
 	Exception("No integer!") 
 	```
-9. Arbitrary restrictions! Add a minimum price:
+10. Arbitrary restrictions! Add a minimum price:
 	```
 	class AtLeast(Descriptor):
 		def __init__(self, name, minimum):
