@@ -84,9 +84,11 @@ Owning the Dot
 	
 		def __get__(self, instance, cls):
 			print("Get", self.name)
+			return instance.__dict__[self.name]
 	
-		def __set__(attr):
+		def __set__(self, instance, value):
 			print("Set", self.name)
+			instance.__dict__[self.name] = value
 	```
 4. Now we modify the class to use this descriptor. Edit the Printer class:
 	```
@@ -101,6 +103,7 @@ Owning the Dot
 	Set price
 	>>> p.price
 	Get price
+	4000
 	>>> p.price = 2000
 	Set price
 	```
