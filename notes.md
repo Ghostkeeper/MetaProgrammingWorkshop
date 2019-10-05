@@ -11,7 +11,7 @@ Function Decorators
 3. Write decorator at the top of m0debugging.py:
 ```
 def debugme(func):
-	print("Generating the wrapped function.")
+	print("Wrapping a function!")
 	def wrapper(*args, **kwargs):
 		print(func.__qualname__)
 		return func(*args, **kwargs)
@@ -32,7 +32,7 @@ Class Decorators
 2. Show m1classdec.py
 3. Write decorator at the top of m1classdec.py
 ```
-from m0debugging.py import debugme
+from m0answer import debugme
 def debugall(cls):
 	for key, val in vars(cls).items():
 		if callable(val):
