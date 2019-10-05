@@ -160,6 +160,17 @@ Exec
 	```
 	python m2performance.py
 	```
+2. How can we do better? There must be a way. Here's a thought...
+3. Modify m3exec.py, add at the top:
+	```
+	def generate_init(fields):
+		s = "def __init__(self, "
+		s += ", ".join(fields)
+		s += "):\n"
+		for field in fields:
+			s += f"\tself.{field} = {field}\n"
+		return s
+	```
 
 Bonus: Metaclass
 ----
