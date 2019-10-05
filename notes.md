@@ -20,9 +20,16 @@ def debugme(func):
 4. Modify code: Instead of prints, use @debugme.
 5. Demonstrate effect:
 ```
-from m0debugging import *
-add(3, 4)
-div(3, 4)
+>>> from m0debugging import *
+Wrapping a function!
+Wrapping a function!
+Wrapping a function!
+>>> add(3, 4)
+add
+7
+>>> sub(3, 4)
+sub
+-1
 ```
 6. You could replace the prints with logging or profiling later, just in one place.
 
@@ -39,10 +46,36 @@ def debugall(cls):
 			setattr(cls, key, debugme(val))
 	return cls
 ```
+4. Demonstrate the result:
+```
+>>> from m1classdec import *
+Wrapping a function!
+Wrapping a function!
+Wrapping a function!
+>>> m = Maths()
+>>> m.add(3, 4)
+Maths.add
+7
+>>> m.mul(3, 4)
+Maths.mul
+12
+```
 
 Owning the Dot
 ----
-[TODO: Explanation about getattr and setattr]
+1. Let's say we have a data structure. Show m2data.py.
+2. Can go wrong with type checking. Demonstrate:
+```
+>>> from m2data import *
+>>> p = Printer(extruders = 2, price = 4000, has_misp = True)
+>>> p.price
+4000             (so far so good, but...)
+>>> q = Printer(extruders = "blue", price = 500, has_misp = 0.5)
+>>> q.price
+500
+>>> q.extruders
+"blue"
+```
 
 Exec
 ----
