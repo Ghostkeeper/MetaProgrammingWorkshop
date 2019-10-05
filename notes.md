@@ -107,6 +107,28 @@ Owning the Dot
 	>>> p.price = 2000
 	Set price
 	```
+6. Using this we can enforce e.g. type checking. Add below Descriptor class:
+	```
+	class Integer(Descriptor):
+		def __set__(self, instance, value):
+			if not isinstance(value, int):
+				raise Exception("No!")
+			super().__set__(instance, value)
+	```
+7. And specify that our price must be integer:
+	```
+	class Printer:
+		price = Integer("price")
+		...
+	```
+8. Demonstrate this effect:
+	```
+	>>> from m2data import *
+	>>> p = Printer(extruders = 2, price = 4000, has_misp = True)
+	Set price
+	>>> p = Printer(extruders = 2, price = "a coffee", has_misp = True)
+	Exception("No!") 
+	```
 
 Exec
 ----
