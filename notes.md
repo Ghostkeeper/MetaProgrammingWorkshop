@@ -156,7 +156,10 @@ Owning the Dot
 
 Exec
 ----
-[TODO: Explanation about generating code as string and exec'ing it]
+1. Descriptor performance cost: run:
+	```
+	python m2performance.py
+	```
 
 Bonus: Metaclass
 ----

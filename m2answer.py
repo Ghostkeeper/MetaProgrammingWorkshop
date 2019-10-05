@@ -3,11 +3,11 @@ class Descriptor:
 		self.name = name
 
 	def __get__(self, instance, cls):
-		print("Get", self.name)
+		#print("Get", self.name)
 		return instance.__dict__[self.name]
 
 	def __set__(self, instance, value):
-		print("Set", self.name)
+		#print("Set", self.name)
 		instance.__dict__[self.name] = value
 
 class Integer(Descriptor):
