@@ -3,6 +3,7 @@ Intro
 1. Metaprogramming is writing code that creates code.
 2. Why metaprogramming: Automating boring task, removing duplicate code.
 3. Why not metaprogramming: Hidden magic, complex code, hard to debug.
+4. Generally a bad idea. Live coding, also a bad idea.
 
 Function Decorators
 ----
@@ -226,7 +227,7 @@ Exec
 		self.name = name
 		code = "def __set__(self, instance, value):\n\t"
 		for cls in self.__class__.__mro__:
-			if "__set__" in cls.__dict__:
+			if "set_code" in cls.__dict__:
 				code += "\n\t".join(cls.set_code()) + "\n\t"
 		print(code)
 	```

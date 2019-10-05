@@ -1,4 +1,3 @@
-@debugall
 class Maths:
 	def add(self, a, b):
 		return a + b
