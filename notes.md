@@ -79,7 +79,7 @@ Owning the Dot
 3. We can do something about that: descriptors. Add at the top of m2data.py:
 	```
 	class Descriptor:
-		def __init__(self, name = None):
+		def __init__(self, name):
 			self.name = name
 	
 		def __get__(self, instance, cls):
@@ -106,6 +106,9 @@ Owning the Dot
 	4000
 	>>> p.price = 2000
 	Set price
+	>>> p.price
+	Get price
+	2000
 	```
 6. Using this we can enforce e.g. type checking. Add below Descriptor class:
 	```
@@ -127,7 +130,27 @@ Owning the Dot
 	>>> p = Printer(extruders = 2, price = 4000, has_misp = True)
 	Set price
 	>>> p = Printer(extruders = 2, price = "a coffee", has_misp = True)
+	...
 	Exception("No!") 
+	```
+9. Arbitrary restrictions! Add a minimum price:
+	```
+	class AtLeast(Descriptor):
+		def __init__(self, name, minimum):
+			self.minimum = minimum
+			super().__init__(name)
+	
+		def __set__(self, instance, value):
+			if value < self.minimum:
+				raise Exception("Too cheap!")
+			super().__set__(instance, value)
+
+	class MinimumInt(Integer, AtLeast):
+		pass
+
+	class Printer:
+		price = MinimumInt("price", 2000)
+		...
 	```
 
 Exec
