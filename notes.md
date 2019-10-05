@@ -251,7 +251,9 @@ Exec
 	Exception: Too little!
 	```
 15. Let's see if that makes it better: `python3 m3performance.py`
+16. Still not as good, but we're doing type checking.
 
-Bonus: Metaclass
+Onwards
 ----
-[TODO: Prepare explanation about metaclasses in case there is time left]
+1. Based on metaprogramming workshop from David Beazley.
+2. He goes on to construct classes from XML files and override the import statement.
