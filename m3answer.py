@@ -18,7 +18,7 @@ class Descriptor:
 		setattr(self.__class__, "__set__", locals["__set__"])
 
 	def __get__(self, instance, cls):
-		print("Get", self.name)
+		#print("Get", self.name)
 		return instance.__dict__[self.name]
 
 	@staticmethod

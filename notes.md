@@ -153,10 +153,7 @@ Owning the Dot
 
 Exec
 ----
-1. Descriptor performance cost: run:
-	```
-	python m2performance.py
-	```
+1. Descriptor performance cost: run `python3 m2performance.py`
 2. How can we do better? There must be a way. Here's a thought...
 3. Modify m3exec.py, add at the top:
 	```
@@ -253,6 +250,7 @@ Exec
 	>>> p.price = 1000
 	Exception: Too little!
 	```
+15. Let's see if that makes it better: `python3 m3performance.py`
 
 Bonus: Metaclass
 ----
