@@ -1,11 +1,3 @@
-from m0debugging import debugme
-
-def debugall(cls):
-	for key, val in vars(cls).items():
-		if callable(val):
-			setattr(cls, key, debugme(val))
-	return cls
-
 @debugall
 class Maths:
 	def add(self, a, b):
