@@ -12,7 +12,7 @@ Function Decorators
 3. Write decorator at the top of m0debugging.py:
 	```
 	def debugme(func):
-		print("Wrapping a function!")
+		print("Decorating a function!")
 		def wrapper(*args, **kwargs):
 			print(func.__qualname__)
 			return func(*args, **kwargs)
@@ -115,7 +115,7 @@ Owning the Dot
 	class Integer(Descriptor):
 		def __set__(self, instance, value):
 			if not isinstance(value, int):
-				raise Exception("No integer!")
+				raise Exception("No int!")
 			super().__set__(instance, value)
 	```
 8. And specify that our price must be integer:
@@ -130,7 +130,7 @@ Owning the Dot
 	Set price
 	>>> p = Printer(extruders = 2, price = "a coffee", has_misp = True)
 	...
-	Exception("No integer!") 
+	Exception("No int!")
 	```
 10. Arbitrary restrictions! Add a minimum price:
 	```
@@ -141,7 +141,7 @@ Owning the Dot
 	
 		def __set__(self, instance, value):
 			if value < self.minimum:
-				raise Exception("Too cheap!")
+				raise Exception("Not enough!")
 			super().__set__(instance, value)
 
 	class MinimumInt(Integer, AtLeast):  # Using descriptors as mixins here.
@@ -170,7 +170,7 @@ Exec
 	def set_code():
 		return [
 			'if not isinstance(value, int):',
-			'\traise Error("No integer!")'  # Pay attention to quotes!
+			'\traise Error("No int!")'  # Pay attention to quotes!
 		]
 	```
 5. And to AtLeast (job security going up):
@@ -179,7 +179,7 @@ Exec
 	def set_code():
 		return [
 			'if value < self.minimum:'
-			'\traise Error("Too little!")'  # Quotes again!
+			'\traise Error("Not enough!")'  # Quotes again!
 		]
 	```
 6. And to Bool:
@@ -217,9 +217,9 @@ Exec
 	Get price   # Still there!
 	4000
 	>>> p.price = "bla"
-	Exception: No integer!
+	Exception: No int!
 	>>> p.price = 1000
-	Exception: Too little!
+	Exception: Not enough!
 	```
 11. Let's see if that makes it better: `python3 m3performance.py`
 12. Still not as good, but we're doing type checking.

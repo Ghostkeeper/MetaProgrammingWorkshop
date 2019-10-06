@@ -21,7 +21,7 @@ class Integer(Descriptor):
 	@staticmethod
 	def set_code():
 		return ['if not isinstance(value, int):',
-				'\traise Exception("No integer!")']
+				'\traise Exception("No int!")']
 
 class AtLeast(Descriptor):
 	def __init__(self, name, minimum):
@@ -31,7 +31,7 @@ class AtLeast(Descriptor):
 	@staticmethod
 	def set_code():
 		return ['if value < self.minimum:',
-				'\traise Exception("Too little!")']
+				'\traise Exception("Not enough!")']
 
 class MinimumInt(Integer, AtLeast):  # Using descriptors as mixins here.
 	pass

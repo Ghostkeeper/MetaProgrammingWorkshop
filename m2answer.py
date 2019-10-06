@@ -13,7 +13,7 @@ class Descriptor:
 class Integer(Descriptor):
 	def __set__(self, instance, value):
 		if not isinstance(value, int):
-			raise Exception("No integer!")
+			raise Exception("No int!")
 		super().__set__(instance, value)
 
 class AtLeast(Descriptor):
@@ -23,7 +23,7 @@ class AtLeast(Descriptor):
 
 	def __set__(self, instance, value):
 		if value < self.minimum:
-			raise Exception("Too little!")
+			raise Exception("Not enough!")
 		super().__set__(instance, value)
 
 class MinimumInt(Integer, AtLeast):  # Using descriptors as mixins here.
