@@ -115,7 +115,7 @@ Owning the Dot
 	class Integer(Descriptor):
 		def __set__(self, instance, value):
 			if not isinstance(value, int):
-				raise Exception("No int!")
+				raise ValueError("No int!")
 			super().__set__(instance, value)
 	```
 8. And specify that our price must be integer:
@@ -141,7 +141,7 @@ Owning the Dot
 	
 		def __set__(self, instance, value):
 			if value < self.minimum:
-				raise Exception("Not enough!")
+				raise ValueError("Not enough!")
 			super().__set__(instance, value)
 
 	class MinimumInt(Integer, AtLeast):  # Using descriptors as mixins here.
@@ -170,7 +170,7 @@ Exec
 	def set_code():
 		return [
 			'if not isinstance(value, int):',
-			'\traise Error("No int!")'  # Pay attention to quotes!
+			'\traise ValueError("No int!")'  # Pay attention to quotes!
 		]
 	```
 5. And to AtLeast (job security going up):
@@ -179,7 +179,7 @@ Exec
 	def set_code():
 		return [
 			'if value < self.minimum:'
-			'\traise Error("Not enough!")'  # Quotes again!
+			'\traise ValueError("Not enough!")'  # Quotes again!
 		]
 	```
 6. And to Bool:
@@ -188,7 +188,7 @@ Exec
 	def set_code():
 		return [
 			'if not isinstance(value, bool):',
-			'\traise Error("No bool!")'  # Quotes again!
+			'\traise ValueError("No bool!")'  # Quotes again!
 		]
 	```
 7. What can we do with this? Well we could define the setter from these code fragments. Edit Descriptor's init:

@@ -21,7 +21,7 @@ class Integer(Descriptor):
 	@staticmethod
 	def set_code():
 		return ['if not isinstance(value, int):',
-				'\traise Exception("No int!")']
+				'\traise ValueError("No int!")']
 
 class AtLeast(Descriptor):
 	def __init__(self, name, minimum):
@@ -31,7 +31,7 @@ class AtLeast(Descriptor):
 	@staticmethod
 	def set_code():
 		return ['if value < self.minimum:',
-				'\traise Exception("Not enough!")']
+				'\traise ValueError("Not enough!")']
 
 class MinimumInt(Integer, AtLeast):  # Using descriptors as mixins here.
 	pass
@@ -40,7 +40,7 @@ class Bool(Descriptor):
 	@staticmethod
 	def set_code():
 		return ['if not isinstance(value, bool):',
-				'\traise Exception("Not boolean!")']
+				'\traise ValueError("Not boolean!")']
 
 class Printer:
 	extruders = MinimumInt("extruders", 1)
