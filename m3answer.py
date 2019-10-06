@@ -1,11 +1,3 @@
-def generate_init(fields):
-	s = "def __init__(self, "
-	s += ", ".join(fields)
-	s += "):\n"
-	for field in fields:
-		s += f"\tself.{field} = {field}\n"
-	return s
-
 class Descriptor:
 	def __init__(self, name):
 		self.name = name
@@ -55,5 +47,7 @@ class Printer:
 	price = MinimumInt("price", 2000)
 	has_misp = Bool("has_misp")
 
-	fields = ["extruders", "price", "has_misp"]
-	exec(generate_init(fields))
+	def __init__(self, extruders, price, has_misp):
+		self.extruders = extruders
+		self.price = price
+		self.has_misp = has_misp

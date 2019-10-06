@@ -155,38 +155,8 @@ Owning the Dot
 Exec
 ----
 1. Descriptor performance cost: run `python3 m2performance.py`
-2. How can we do better? There must be a way. Here's a thought...
-3. Modify m3exec.py, add at the top:
-	```
-	def generate_init(fields):
-		s = "def __init__(self, "
-		s += ", ".join(fields)
-		s += "):\n"
-		for field in fields:
-			s += f"\tself.{field} = {field}\n"
-		return s
-	```
-4. Demonstrate live with `python3 -i m3exec.py`:
-	```
-	>>> generate_init(["extruders", "price", "has_misp"])
-	'def __init__(self, extruders, price, has_misp):\n ... '
-	>>> print(generate_init(["extruders", "price", "has_misp"])
-	def __init__(self, extruders, price, has_misp: ...
-	```
-5. Oh God, what atrocities is this guy up to! We can use that in our class. Modify m3exec.py in Printer class:
-	```
-	class Printer:
-		_fields = ["extruders", "price", "has_misp"]
-		exec(generate_init(_fields))
-	```
-	And remove the original init.
-6. Demonstrate again with `python3 -i m3exec.py`:
-	```
-	>>> p = Printer(2, 4000, True)
-	Set price
-	```
-	It still properly sets the price field. Powerful idea! namedtuple uses this.
-7. Use that to improve performance. Modify m3exec.py, replacing __set__ in Descriptor class:
+2. How can we do better? There must be a way. Here's a thought... Wrapping functions and inheritance costs performance.
+3. Modify m3exec.py, replacing \_\_set\_\_ in Descriptor class:
 	```
 	class Descriptor:
 		...
@@ -194,7 +164,7 @@ Exec
 		def set_code():
 			return ["instance.__dict__[self.name] = value"]
 	```
-8. Stay with me. We add something similar to Integer:
+4. Stay with me. We add something similar to Integer:
 	```
 	@staticmethod
 	def set_code():
@@ -203,7 +173,7 @@ Exec
 			'\traise Error("No integer!")'  # Pay attention to quotes!
 		]
 	```
-9. And to AtLeast (job security going up):
+5. And to AtLeast (job security going up):
 	```
 	@staticmethod
 	def set_code():
@@ -212,7 +182,7 @@ Exec
 			'\traise Error("Too little!")'  # Quotes again!
 		]
 	```
-10. And to Bool:
+6. And to Bool:
 	```
 	@staticmethod
 	def set_code():
@@ -221,7 +191,7 @@ Exec
 			'\traise Error("No bool!")'  # Quotes again!
 		]
 	```
-11. What can we do with this? Well we could define the setter from these code fragments. Edit Descriptor's init:
+7. What can we do with this? Well we could define the setter from these code fragments. Edit Descriptor's init:
 	```
 	def __init__(self, name):
 		self.name = name
@@ -231,8 +201,8 @@ Exec
 				code += "\n\t".join(cls.set_code()) + "\n\t"
 		print(code)
 	```
-12. Now if we open this file with `python3 -i m3exec.py` it prints a bunch of code fragments.
-13. We can exec these. Modify the Descriptor init again:
+8. Now if we open this file with `python3 -i m3exec.py` it prints a bunch of code fragments.
+9. We can exec these. Modify the Descriptor init again:
 	```
 	def __init__(self, name):
 		... print(code)
@@ -240,7 +210,7 @@ Exec
 		exec(code, globals(), locals)
 		setattr(self.__class__, "__set__", locals["__set__"])  # Technicality: def adds to locals.
 	``` 
-14. I really hope this works. Demonstrate with `python3 -i m3exec.py`:
+10. I really hope this works. Demonstrate with `python3 -i m3exec.py`:
 	```
 	>>> p = Printer(2, 4000, True)
 	>>> p.price
@@ -251,8 +221,8 @@ Exec
 	>>> p.price = 1000
 	Exception: Too little!
 	```
-15. Let's see if that makes it better: `python3 m3performance.py`
-16. Still not as good, but we're doing type checking.
+11. Let's see if that makes it better: `python3 m3performance.py`
+12. Still not as good, but we're doing type checking.
 
 Onwards
 ----
