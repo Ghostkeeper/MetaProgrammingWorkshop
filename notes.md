@@ -22,9 +22,9 @@ Function Decorators
 5. Demonstrate effect with `python3`:
 	```
 	>>> from m0debugging import *
-	Wrapping a function!
-	Wrapping a function!
-	Wrapping a function!
+	Decorating a function!
+	Decorating a function!
+	Decorating a function!
 	>>> add(3, 4)
 	add
 	7
@@ -51,9 +51,9 @@ Class Decorators
 4. Demonstrate the result with `python3`:
 	```
 	>>> from m1classdec import *
-	Wrapping a function!
-	Wrapping a function!
-	Wrapping a function!
+	Decorating a function!
+	Decorating a function!
+	Decorating a function!
 	>>> m = Maths()
 	>>> m.add(3, 4)
 	Maths.add
@@ -78,7 +78,7 @@ Alternative: Metaclasses
 	>>> type(type(x))
 	<class 'type'>
 	```
-5. Classes are instances of the metaclass "type".
+5. Classes are instances of the metaclass "type". First-class citizen.
 6. The function of the "type" is to create an instance, reserve memory, etc.
 7. Demonstrate in m1classdec.py:
 	```
@@ -110,9 +110,9 @@ Alternative: Metaclasses
 	```
 10. Demonstrate again in `python3 -i m1classdec.py`:
 	```
-	Wrapping a function!
-	Wrapping a function!
-	Wrapping a function! (wrapped 3 times)
+	Decorating a function!
+	Decorating a function!
+	Decorating a function! (wrapped 3 times)
 	>>> m = Maths()
 	>>> m.add(3, 4)
 	Maths.add
@@ -120,6 +120,7 @@ Alternative: Metaclasses
 	```
 11. So it wrapped every function just like we told it to, during declaration of the class.
 12. Most things that can be done with metaclasses can also be done with inheritance or class decorators (also this one).
+13. Planned for C++20! As if it weren't complex enough there.
 
 Owning the Dot
 ----
