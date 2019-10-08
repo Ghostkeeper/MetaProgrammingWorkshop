@@ -33,6 +33,7 @@ Function Decorators
 	-1
 	```
 6. You could replace the prints with logging or profiling later, just in one place.
+7. Present alternatives: Class decorator or going crazy with a metaclass?
 
 Class Decorators
 ----
@@ -61,6 +62,63 @@ Class Decorators
 	Maths.mul
 	12
 	```
+
+Alternative: Metaclasses
+----
+1. All those @debugme are still repetitive. Want to debug an entire class?
+2. Show m1classdec.py
+3. Present `metaclass=?` property of class definition.
+4. Object is instance of class, class is instance of type. Demonstrate in `python3`:
+	```
+	>>> class Foo:
+	>>>   pass
+	>>> x = Foo()
+	>>> type(x)
+	<class '__main__.Foo'>
+	>>> type(type(x))
+	<class 'type'>
+	```
+5. Classes are instances of the metaclass "type".
+6. The function of the "type" is to create an instance, reserve memory, etc.
+7. Demonstrate in m1classdec.py:
+	```
+	class DebugMeta(type):
+		def __new__(name, bases, clsdict):
+			print("name:", name)
+			print("bases:", bases)
+			print("clsdict:", clsdict)
+			return super().__new__(name, bases, clsdict)
+
+	class Maths(metaclass = DebugMeta): ...
+	```
+8. Now show what happens with `python3 -i m1classdec.py`:
+	```
+	name: Maths     # The name of our class.
+	bases: ()       # Superclasses.
+	clsdict: { ...} # All of the contents of the class.
+	```
+9. Modify the contents to wrap debugme! Edit m1classdec.py:
+	```
+	from m0answer import debugme
+	class DebugMeta(type):
+		def __new__(...)
+			...print("clsdict:", clsdict)
+			for key, val in clsdict.items():
+				if callable(val):
+					clsdict[key] = debugme(val)
+			...return super().__new__(...)
+	```
+10. Demonstrate again in `python3 -i m1classdec.py`:
+	```
+	Wrapping a function!
+	Wrapping a function!
+	Wrapping a function! (wrapped 3 times)
+	>>> m = Maths()
+	>>> m.add(3, 4)
+	Maths.add
+	7
+	```
+11. So it wrapped every function just like we told it to, during declaration of the class.
 
 Owning the Dot
 ----

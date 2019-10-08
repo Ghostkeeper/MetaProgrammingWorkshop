@@ -1,12 +1,15 @@
 from m0answer import debugme
 class DebugMeta(type):
 	def __new__(cls, name, bases, clsdict):
+		print("name:", name)
+		print("bases:", bases)
+		print("clsdict:", clsdict)
 		for key, val in clsdict.items():
 			if callable(val):
 				clsdict[key] = debugme(val)
 		return super().__new__(cls, name, bases, clsdict)
 
-class Maths(metaclass=DebugMeta):
+class Maths(metaclass = DebugMeta):
 	def add(self, a, b):
 		return a + b
 
