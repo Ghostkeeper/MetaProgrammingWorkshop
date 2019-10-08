@@ -119,6 +119,7 @@ Alternative: Metaclasses
 	7
 	```
 11. So it wrapped every function just like we told it to, during declaration of the class.
+12. Most things that can be done with metaclasses can also be done with inheritance or class decorators (also this one).
 
 Owning the Dot
 ----
