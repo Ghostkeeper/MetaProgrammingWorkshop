@@ -1,4 +1,5 @@
 from m0answer import debugme
+
 class DebugMeta(type):
 	def __new__(cls, name, bases, clsdict):
 		print("name:", name)

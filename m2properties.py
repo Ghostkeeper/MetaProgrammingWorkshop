@@ -12,10 +12,10 @@ class Printer:
 	@extruders.setter
 	def extruders(self, value):
 		if not isinstance(value, int):
-			raise Exception("No integer!")
+			raise TypeError("No integer!")
 		if value < 1:
-			raise Exception("Need at least one extruder!")
-		print("Set extruders")
+			raise ValueError("Need at least one extruder!")
+		print("Set extruders", value)
 		self._extruders = value
 
 	@property
@@ -26,10 +26,10 @@ class Printer:
 	@price.setter
 	def price(self, value):
 		if not isinstance(value, int):
-			raise Exception("No integer!")
+			raise TypeError("No integer!")
 		if value < 2000:
-			raise Exception("Too cheap!")
-		print("Set price")
+			raise ValueError("Too cheap!")
+		print("Set price", value)
 		self._price = value
 
 	@property
@@ -40,6 +40,6 @@ class Printer:
 	@has_misp.setter
 	def has_misp(self, value):
 		if not isinstance(value, bool):
-			raise Exception("Must be boolean!")
-		print("Set has_misp")
+			raise TypeError("Must be boolean!")
+		print("Set has_misp", value)
 		self._has_misp = value
