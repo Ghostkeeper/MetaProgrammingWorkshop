@@ -83,11 +83,11 @@ Alternative: Metaclasses
 7. Demonstrate in m1classdec.py:
 	```
 	class DebugMeta(type):
-		def __new__(name, bases, clsdict):
+		def __new__(typ, name, bases, clsdict):
 			print("name:", name)
 			print("bases:", bases)
 			print("clsdict:", clsdict)
-			return super().__new__(name, bases, clsdict)
+			return super().__new__(typ, name, bases, clsdict)
 
 	class Maths(metaclass = DebugMeta): ...
 	```
