@@ -229,7 +229,7 @@ Exec
 	@staticmethod
 	def set_code():
 		return [
-			'if not isinstance(value, int):',
+			'if not isinstance(value, int):',  # Commas!
 			'\traise ValueError("No int!")'  # Pay attention to quotes!
 		]
 	```
@@ -238,7 +238,7 @@ Exec
 	@staticmethod
 	def set_code():
 		return [
-			'if value < self.minimum:'
+			'if value < self.minimum:',
 			'\traise ValueError("Not enough!")'  # Quotes again!
 		]
 	```
