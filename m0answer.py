@@ -1,5 +1,5 @@
 def debugme(func):
-	print("Wrapping a function!")
+	print("Decorating a function!")
 	def wrapper(*args, **kwargs):
 		print(func.__qualname__)
 		return func(*args, **kwargs)
